@@ -1,10 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
-from PyInstaller.utils.crypto import PyiBlockCipher
 
-# ★ 打包前请修改为你自己的密钥（16/24/32位任意字符串）
-# ★ 请勿将真实密钥提交到版本控制，可通过环境变量读取，例如:
-# ★   import os; key = os.environ.get('WXKEY_BUILD_KEY', 'WxKey@2026#Secret')
-block_cipher = PyiBlockCipher(key='WxKey@2026#Secret')
+block_cipher = None
 
 a = Analysis(
     ['01_wx_win.py'],
@@ -23,19 +19,34 @@ a = Analysis(
         'ctypes.wintypes',
         'threading',
         'concurrent.futures',
+        'multiprocessing',
+        'multiprocessing.reduction',
         'json',
         'shutil',
         'pathlib',
         'signal',
+        'pickle',           # ★ 必须保留
+        'copyreg',
+        '_compat_pickle',
     ],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
     excludes=[
-        'tkinter', 'unittest', 'email', 'html',
-        'http', 'urllib', 'xml', 'pydoc',
-        'doctest', 'optparse', 'pickle',
-        'numpy', 'pandas', 'matplotlib',
+        'tkinter',
+        'unittest',
+        'email',
+        'html',
+        'http',
+        'urllib',
+        'xml',
+        'pydoc',
+        'doctest',
+        'optparse',
+        # 'pickle',   ← 已删除！这是崩溃根因
+        'numpy',
+        'pandas',
+        'matplotlib',
     ],
     cipher=block_cipher,
     noarchive=False,
